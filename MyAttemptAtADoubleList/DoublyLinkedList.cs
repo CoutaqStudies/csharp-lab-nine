@@ -84,6 +84,22 @@ namespace MyAttemptAtADoubleList
             return array;
         }
         public int Count { get { return count; } }
+        public void Clear()
+        {
+            head = null;
+            tail = null;
+            count = 0;
+        }
+        internal void InsertAtIndex(int index, T data)
+        {
+            DoublyNode<T> node = new DoublyNode<T>(data);
+            DoublyNode<T> prevNode = NodeAt(index - 1);
+            DoublyNode<T> nextNode = NodeAt(index);
+            node.Next = nextNode;
+            node.Next = prevNode;
+            prevNode.Next = node;
+            nextNode.Previous = node;
+        }
         public T ItemAt(int index)
         {
             if (index >= count)
@@ -95,6 +111,22 @@ namespace MyAttemptAtADoubleList
             {
                 if (i == index)
                     return current.Data;
+                else
+                    current = current.Next;
+            }
+            return default;
+        }
+        private DoublyNode<T> NodeAt(int index)
+        {
+            if (index >= count)
+                throw new IndexOutOfRangeException("List is smaller than the index.");
+            if (index < 0)
+                throw new IndexOutOfRangeException("Index cannot be negative.");
+            DoublyNode<T> current = head;
+            for (int i = 0; current != null; i++)
+            {
+                if (i == index)
+                    return current;
                 else
                     current = current.Next;
             }

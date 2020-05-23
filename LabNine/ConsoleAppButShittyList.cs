@@ -8,7 +8,7 @@ namespace LabNine
     public class ConsoleAppButShittyList
     {
         
-        public static void Execute(BadList<GeographicalUnit> countries, BadList<LogEntry> log) 
+        public static void Execute(DoublyLinkedList<GeographicalUnit> countries, DoublyLinkedList<LogEntry> log) 
         {
             String prompt = "1 – Просмотр таблицы\n2 – Добавить запись\n3 – Удалить запись\n4 – Обновить запись\n5 – Поиск записей\n6 – Просмотреть лог\n7 - Выход";
             Console.WriteLine(prompt);
@@ -105,9 +105,9 @@ namespace LabNine
                         }
                     }
 
-                    Console.WriteLine($"Removed {countries[entry-1].getName()} from the list.");
-                    log = addEntry(new LogEntry(countries[entry - 1].getName(), LogEntry.Action.DELETE), log);
-                    countries.RemoveAt(entry - 1);
+                    Console.WriteLine($"Removed {countries.ItemAt(entry-1).getName()} from the list.");
+                    log = addEntry(new LogEntry(countries.ItemAt(entry - 1).getName(), LogEntry.Action.DELETE), log);
+                    countries.Remove(countries.ItemAt(entry - 1));
                     Execute(countries,log);
                     break;
                 case 4:
@@ -169,8 +169,8 @@ namespace LabNine
                     }
                     form = (GeographicalUnit.FormOfGov)Enum.Parse(typeof(GeographicalUnit.FormOfGov), upperString);
                     Console.WriteLine($"Updated {name}.");
-                    countries.removeAtIndex(entry - 1);
-                    countries.Append(entry-1, new GeographicalUnit(name, capital, population, form));
+                    countries.remove(countries.ItemAt(entry - 1));
+                    countries.Add(entry-1, new GeographicalUnit(name, capital, population, form));
                     log = addEntry(new LogEntry(name, LogEntry.Action.UPDATE), log);
                     Execute(countries,log);
                     break;
@@ -291,9 +291,9 @@ namespace LabNine
                     return;
             }
         }
-        public static BadList<LogEntry> addEntry(LogEntry entry, BadList<LogEntry> list, int size = 50)
+        public static DoublyLinkedList<LogEntry> addEntry(LogEntry entry, DoublyLinkedList<LogEntry> list, int size = 50)
         {
-            BadList<LogEntry> newList = new BadList<LogEntry>();
+            DoublyLinkedList<LogEntry> newList = new DoublyLinkedList<LogEntry>();
             foreach (var c in list)
             {
                 newList.Append(c);
