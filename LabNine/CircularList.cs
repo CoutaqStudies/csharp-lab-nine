@@ -54,9 +54,9 @@ namespace LabNine
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Node<T> current = NodeAtIndex(start);
             int currentWord = 0;
-            for (int i = start; i <= array.Length-1+start; i++)
+            for (int i = start; i <= array.Length - 1 + start; i++)
             {
-                Console.WriteLine(array[currentWord] +"--->"+current.Data.ToString());
+                Console.WriteLine(array[currentWord] + "--->" + current.Data.ToString());
                 currentWord++;
                 if (i == (array.Length - 1 + start))
                     return current.Data;
@@ -84,4 +84,3 @@ namespace LabNine
         }
     }
 }
-
