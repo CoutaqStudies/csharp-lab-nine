@@ -16,7 +16,7 @@ namespace LabNine
             /*DoublyLinkedList<GeographicalUnit> badCountries;
             DoublyLinkedList<LogEntry> badLog;
             ConsoleAppButShittyList.Execute(badCountries, badLog);*/
-            TaskSix.Execute();
+            TaskSeven.Execute();
         }
     }
 }
