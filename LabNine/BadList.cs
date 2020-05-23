@@ -38,6 +38,15 @@ namespace LabNine
             tail = node;
             count++;
         }
+        public DoublyLinkedList<T> Clone()
+        {
+            DoublyLinkedList<T> returnList = new DoublyLinkedList<T>();
+            foreach(T data in this)
+            {
+                returnList.Add(data);
+            }
+            return returnList;
+        }
         public bool Remove(T data)
         {
             DoublyNode<T> current = head;
@@ -88,7 +97,23 @@ namespace LabNine
             }
             return array;
         }
+        public void Clear()
+        {
+            head = null;
+            tail = null;
+            count = 0;
+        }
         public int Count { get { return count; } }
+        internal void InsertAtIndex(int index, T data)
+        {
+            DoublyNode<T> node = new DoublyNode<T>(data);
+            DoublyNode<T> prevNode = NodeAt(index - 1);
+            DoublyNode<T> nextNode = NodeAt(index);
+            node.Next = nextNode;
+            node.Next = prevNode;
+            prevNode.Next = node;
+            nextNode.Previous = node;
+        }
         public T ItemAt(int index)
         {
             if (index >= count)
@@ -100,6 +125,22 @@ namespace LabNine
             {
                 if (i == index)
                     return current.Data;
+                else
+                    current = current.Next;
+            }
+            return default;
+        }
+        private DoublyNode<T> NodeAt(int index)
+        {
+            if (index >= count)
+                throw new IndexOutOfRangeException("List is smaller than the index.");
+            if (index < 0)
+                throw new IndexOutOfRangeException("Index cannot be negative.");
+            DoublyNode<T> current = head;
+            for (int i = 0; current != null; i++)
+            {
+                if (i == index)
+                    return current;
                 else
                     current = current.Next;
             }

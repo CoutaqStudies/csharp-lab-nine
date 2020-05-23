@@ -7,9 +7,10 @@ namespace LabNine
 {
     public class ConsoleAppButShittyList
     {
-        
-        public static void Execute(DoublyLinkedList<GeographicalUnit> countries, DoublyLinkedList<LogEntry> log) 
+        const int SHOW = 1, ADD = 2, DELETE = 3, UPDATE = 4, SEARCH = 5, SHOWLOG = 6, EXIT = 7;
+        public static void Execute(DoublyLinkedList<GeographicalUnit> countries, DoublyLinkedList<LogEntry> log)
         {
+            #region PROMPT
             String prompt = "1 – Просмотр таблицы\n2 – Добавить запись\n3 – Удалить запись\n4 – Обновить запись\n5 – Поиск записей\n6 – Просмотреть лог\n7 - Выход";
             Console.WriteLine(prompt);
             int input = 0;
@@ -19,73 +20,67 @@ namespace LabNine
             }
             catch (FormatException)
             {
-                Execute(countries,log);
+                Execute(countries, log);
             }
+            #endregion
             switch (input)
             {
-                case 1:
-                    String output = "\n--------------------------------------\n";
-                     if (countries.Count()==0)
-                         output = ("The list is empty!");
-                     else
-                     {
-                         foreach (GeographicalUnit country in countries)
-                             output += country.getInfoTable();
-                     }
+                #region SHOW
+                case SHOW:
+                    String output = String.Empty;
+                    if (countries.Count == 0)
+                        output = ("The list is empty!");
+                    else
+                        foreach (GeographicalUnit country in countries)
+                            output += country.getInfoTable();
                     Console.WriteLine(output);
-                    Execute(countries,log);
+                    Execute(countries, log);
                     break;
-                case 2:
-                        Console.Write("Please enter the country: ");
-                        string name = Console.ReadLine();
-                        Console.Write("Please enter the capital: ");
-                        string capital = Console.ReadLine();
-                        int population = 0;
-                        while (true)
+                #endregion
+                #region ADD
+                case ADD:
+                    Console.Write("Please enter the country: ");
+                    string name = Console.ReadLine();
+                    Console.Write("Please enter the capital: ");
+                    string capital = Console.ReadLine();
+                    int population;
+                    while (true)
+                    {
+                        try
                         {
-                            try
-                            {
-                                Console.Write("Please enter the population: ");
-                                population = int.Parse(Console.ReadLine());
-                                if (population < 0)
-                                {
-                                    throw new FormatException();
-                                }
-                                break;
-                            }
-                            catch (FormatException)
-                            {
-                                Console.Write("Incorrect input, try again: ");
-                            }
+                            Console.Write("Please enter the population: ");
+                            population = int.Parse(Console.ReadLine());
+                            if (population < 0)
+                                throw new FormatException();
+                            break;
                         }
-                        string formString = "";
-                        string upperString = "";
-                        GeographicalUnit.FormOfGov form;
-                        while (true)
+                        catch (FormatException)
                         {
-                            try
-                            {
-                                Console.Write("Please enter the form of government: ");
-                                formString = Console.ReadLine();
-                                upperString = (formString.ToUpper()).ToString();
-                                if (upperString != "US" && upperString != "F")
-                                {
-                                    throw new FormatException();
-                                }
-                                break;
-                            }
-                            catch (FormatException)
-                            {
-                                Console.Write("Incorrect input, try again: ");
-                            }
+                            Console.Write("Incorrect input, try again: ");
                         }
-                        form = (GeographicalUnit.FormOfGov)Enum.Parse(typeof(GeographicalUnit.FormOfGov), upperString);
-                    countries.Append(new GeographicalUnit(name, capital, population, form ));
+                    }
+                    GeographicalUnit.FormOfGov form;
+                    while (true)
+                    {
+                        try
+                        {
+                            Console.Write("Please enter the form of government: ");
+                            form = (GeographicalUnit.FormOfGov)Enum.Parse(typeof(GeographicalUnit.FormOfGov), Console.ReadLine().ToUpper());
+                            break;
+                        }
+                        catch (Exception)
+                        {
+                            Console.Write("Incorrect input, try again: ");
+                        }
+                    }
+                    countries.Add(new GeographicalUnit(name, capital, population, form));
                     Console.WriteLine($"Added {name} to the list.");
                     log = addEntry(new LogEntry(name, LogEntry.Action.ADD), log);
-                    Execute(countries,log);
+                    Execute(countries, log);
                     break;
-                case 3:
+                #endregion
+                #region DELETE
+                case DELETE:
                     int entry = 0;
                     while (true)
                     {
@@ -93,7 +88,7 @@ namespace LabNine
                         {
                             Console.WriteLine("Which entry do you want to remove? ");
                             entry = int.Parse(Console.ReadLine());
-                            if (entry > countries.Count() || entry < 1)
+                            if (entry > countries.Count || entry < 1)
                             {
                                 throw new FormatException();
                             }
@@ -104,20 +99,21 @@ namespace LabNine
                             Console.Write("Incorrect input, try again: ");
                         }
                     }
-
-                    Console.WriteLine($"Removed {countries.ItemAt(entry-1).getName()} from the list.");
+                    Console.WriteLine($"Removed {countries.ItemAt(entry - 1).getName()} from the list.");
                     log = addEntry(new LogEntry(countries.ItemAt(entry - 1).getName(), LogEntry.Action.DELETE), log);
                     countries.Remove(countries.ItemAt(entry - 1));
-                    Execute(countries,log);
+                    Execute(countries, log);
                     break;
-                case 4:
+                #endregion
+                #region UPDATE
+                case UPDATE:
                     while (true)
                     {
                         try
                         {
                             Console.WriteLine("Which entry do you want to update? ");
                             entry = int.Parse(Console.ReadLine());
-                            if (entry > countries.Count() || entry < 1)
+                            if (entry > countries.Count || entry < 1)
                             {
                                 throw new FormatException();
                             }
@@ -154,43 +150,37 @@ namespace LabNine
                         try
                         {
                             Console.Write("Please enter the form of government: ");
-                            formString = Console.ReadLine();
-                            upperString = (formString.ToUpper()).ToString();
-                            if (upperString != "US" && upperString != "F")
-                            {
-                                throw new FormatException();
-                            }
+                            form = (GeographicalUnit.FormOfGov)Enum.Parse(typeof(GeographicalUnit.FormOfGov), Console.ReadLine().ToUpper());
                             break;
                         }
-                        catch (FormatException)
+                        catch (Exception)
                         {
                             Console.Write("Incorrect input, try again: ");
                         }
                     }
-                    form = (GeographicalUnit.FormOfGov)Enum.Parse(typeof(GeographicalUnit.FormOfGov), upperString);
                     Console.WriteLine($"Updated {name}.");
-                    countries.remove(countries.ItemAt(entry - 1));
-                    countries.Add(entry-1, new GeographicalUnit(name, capital, population, form));
+                    countries.UpdateAtIndex(new GeographicalUnit(name, capital, population, form), entry - 1);
                     log = addEntry(new LogEntry(name, LogEntry.Action.UPDATE), log);
-                    Execute(countries,log);
+                    Execute(countries, log);
                     break;
-                case 5:
-                    List<GeographicalUnit> old_countries = new List<GeographicalUnit>();
-                    List<GeographicalUnit> removeList = new List<GeographicalUnit>();
-                    old_countries = countries.ToList();
+                #endregion
+                #region SEARCH
+                case SEARCH:
+                    DoublyLinkedList<GeographicalUnit> old_countries = new DoublyLinkedList<GeographicalUnit>();
+                    DoublyLinkedList<GeographicalUnit> removeDoublyLinkedList = new DoublyLinkedList<GeographicalUnit>();
+                    old_countries = countries.Clone();
                     Console.WriteLine("Filters: Population size and form of government.");
                     Console.WriteLine("Choose the filter: ");
                     if (Console.ReadLine().ToUpper() == "FORM")
                     {
-                        int number = 0;
                         Console.WriteLine("Federation(F) or Unitary state(US): ");
                         if (Console.ReadLine().ToUpper() == "F")
                         {
                             foreach (GeographicalUnit country in old_countries)
                             {
                                 if (country.getForm().Equals(GeographicalUnit.FormOfGov.US))
-                                    removeList.Add(country);
-                                   
+                                    removeDoublyLinkedList.Add(country);
+
                             }
                         }
                         else
@@ -198,7 +188,7 @@ namespace LabNine
                             foreach (GeographicalUnit country in old_countries)
                             {
                                 if (country.getForm().Equals(GeographicalUnit.FormOfGov.F))
-                                    removeList.Add(country);
+                                    removeDoublyLinkedList.Add(country);
                             }
                         }
                     }
@@ -226,7 +216,7 @@ namespace LabNine
                             foreach (GeographicalUnit country in old_countries)
                             {
                                 if (country.getPopulation() > number)
-                                    removeList.Add(country);
+                                    removeDoublyLinkedList.Add(country);
                             }
                         }
                         else
@@ -249,16 +239,16 @@ namespace LabNine
                             foreach (GeographicalUnit country in old_countries)
                             {
                                 if (country.getPopulation() < number)
-                                    removeList.Add(country);
+                                    removeDoublyLinkedList.Add(country);
                             }
                         }
                     }
-                    foreach (GeographicalUnit country in removeList)
+                    foreach (GeographicalUnit country in removeDoublyLinkedList)
                     {
                         countries.Remove(country);
                     }
                     output = "\n--------------------------------------\n";
-                    if (countries.Count() == 0)
+                    if (countries.Count == 0)
                         output = ("The list is empty!");
                     else
                     {
@@ -269,47 +259,43 @@ namespace LabNine
                     }
 
                     Console.WriteLine(output);
-                    countries.Clear();
-                    foreach(var c in old_countries)
-                    {
-                        countries.Append(c);
-                    }
-                   // countries = old_countries.ToList();
-                    Execute(countries,log);
+                    countries = old_countries.Clone();
+                    Execute(countries, log);
                     break;
-                case 6:
+                #endregion
+                #region SHOWLOG
+                case SHOWLOG:
                     output = "";
-                    foreach(LogEntry i in log)
+                    foreach (LogEntry i in log)
                     {
-                        output += i.logFormatted()+"\n";
+                        output += i.logFormatted() + "\n";
                     }
-                    output+=($"\n{longestIdleTime(log)} - Самый долгий период бездействия пользователя");
+                    output += ($"\n{longestIdleTime(log)} - Самый долгий период бездействия пользователя");
                     Console.WriteLine(output);
-                    Execute(countries,log);
+                    Execute(countries, log);
                     break;
-                case 7:
+                #endregion
+                #region EXIT
+                case EXIT:
                     return;
+                    #endregion
             }
         }
         public static DoublyLinkedList<LogEntry> addEntry(LogEntry entry, DoublyLinkedList<LogEntry> list, int size = 50)
         {
-            DoublyLinkedList<LogEntry> newList = new DoublyLinkedList<LogEntry>();
-            foreach (var c in list)
-            {
-                newList.Append(c);
-            }
+            DoublyLinkedList<LogEntry> newDoublyLinkedList = list.Clone();
             if (list.Count() < size)
             {
-                newList.Append(entry);
+                newDoublyLinkedList.Add(entry);
             }
             else
             {
-                newList.RemoveAtIndex(0);
-                newList.Append(entry);
+                newDoublyLinkedList.Remove(newDoublyLinkedList.ItemAt(0));
+                newDoublyLinkedList.Add(entry);
             }
-            return newList;
+            return newDoublyLinkedList;
         }
-        public static String longestIdleTime(List<LogEntry> log)
+        public static String longestIdleTime(DoublyLinkedList<LogEntry> log)
         {
             TimeSpan startTime, endTime;
             String idle = "";
@@ -319,8 +305,8 @@ namespace LabNine
             {
                 for (int i = 0; i < log.Count() - 1; i++)
                 {
-                    startTime = TimeSpan.ParseExact(log[i].getTime(), @"h\:mm\:ss", CultureInfo.InvariantCulture);
-                    endTime = TimeSpan.ParseExact(log[i + 1].getTime(), @"h\:mm\:ss", CultureInfo.InvariantCulture);
+                    startTime = TimeSpan.ParseExact(log.ItemAt(i).getTime(), @"h\:mm\:ss", CultureInfo.InvariantCulture);
+                    endTime = TimeSpan.ParseExact(log.ItemAt(i+1).getTime(), @"h\:mm\:ss", CultureInfo.InvariantCulture);
                     double diffInSeconds = (endTime - startTime).TotalSeconds;
                     TimeSpan time = TimeSpan.FromSeconds(diffInSeconds);
                     idle = time.ToString(@"h\:mm\:ss");
