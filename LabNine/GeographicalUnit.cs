@@ -17,15 +17,15 @@ namespace LabNine
             this.Population = population;
             this.Form = form;
         }
-        public String getName()
+        public String GetName()
         {
             return Country;
         }
-        public int getPopulation()
+        public int GetPopulation()
         {
             return Population;
         }
-        public FormOfGov getForm()
+        public FormOfGov GetForm()
         {
             return Form;
         }
@@ -33,7 +33,7 @@ namespace LabNine
         public GeographicalUnit()
         {
         }
-        public string getInfoTable()
+        public string GetInfoTable()
         {
             String output = String.Format("{0,-10} |{1,-0} |{2,-10} |{3,-2}|", Country, Capital, Population, Form);
             output += "\n--------------------------------------\n";

@@ -32,7 +32,7 @@ namespace LabNine
                         output = ("The list is empty!");
                     else
                         foreach (GeographicalUnit country in countries)
-                            output += country.getInfoTable();
+                            output += country.GetInfoTable();
                     Console.WriteLine(output);
                     Execute(countries, log);
                     break;
@@ -75,13 +75,13 @@ namespace LabNine
                     }
                     countries.Add(new GeographicalUnit(name, capital, population, form));
                     Console.WriteLine($"Added {name} to the list.");
-                    log = addEntry(new LogEntry(name, LogEntry.Action.ADD), log);
+                    log = AddEntry(new LogEntry(name, LogEntry.Action.ADD), log);
                     Execute(countries, log);
                     break;
                 #endregion
                 #region DELETE
                 case DELETE:
-                    int entry = 0;
+                    int entry;
                     while (true)
                     {
                         try
@@ -99,8 +99,8 @@ namespace LabNine
                             Console.Write("Incorrect input, try again: ");
                         }
                     }
-                    Console.WriteLine($"Removed {countries[entry - 1].getName()} from the list.");
-                    log = addEntry(new LogEntry(countries[entry - 1].getName(), LogEntry.Action.DELETE), log);
+                    Console.WriteLine($"Removed {countries[entry - 1].GetName()} from the list.");
+                    log = AddEntry(new LogEntry(countries[entry - 1].GetName(), LogEntry.Action.DELETE), log);
                     countries.RemoveAt(entry - 1);
                     Execute(countries, log);
                     break;
@@ -161,15 +161,14 @@ namespace LabNine
                     Console.WriteLine($"Updated {name}.");
                     countries.RemoveAt(entry - 1);
                     countries.Insert(entry - 1, new GeographicalUnit(name, capital, population, form));
-                    log = addEntry(new LogEntry(name, LogEntry.Action.UPDATE), log);
+                    log = AddEntry(new LogEntry(name, LogEntry.Action.UPDATE), log);
                     Execute(countries, log);
                     break;
                 #endregion
                 #region SEARCH
                 case SEARCH:
-                    List<GeographicalUnit> old_countries = new List<GeographicalUnit>();
+                    List<GeographicalUnit> old_countries = countries.ToList();
                     List<GeographicalUnit> removeList = new List<GeographicalUnit>();
-                    old_countries = countries.ToList();
                     Console.WriteLine("Filters: Population size and form of government.");
                     Console.WriteLine("Choose the filter: ");
                     if (Console.ReadLine().ToUpper() == "FORM")
@@ -179,7 +178,7 @@ namespace LabNine
                         {
                             foreach (GeographicalUnit country in old_countries)
                             {
-                                if (country.getForm().Equals(GeographicalUnit.FormOfGov.US))
+                                if (country.GetForm().Equals(GeographicalUnit.FormOfGov.US))
                                     removeList.Add(country);
 
                             }
@@ -188,14 +187,14 @@ namespace LabNine
                         {
                             foreach (GeographicalUnit country in old_countries)
                             {
-                                if (country.getForm().Equals(GeographicalUnit.FormOfGov.F))
+                                if (country.GetForm().Equals(GeographicalUnit.FormOfGov.F))
                                     removeList.Add(country);
                             }
                         }
                     }
                     else
                     {
-                        int number = 0;
+                        int number;
                         Console.WriteLine("Less or More: ");
                         if (Console.ReadLine().ToUpper() == "LESS")
                         {
@@ -216,7 +215,7 @@ namespace LabNine
                             }
                             foreach (GeographicalUnit country in old_countries)
                             {
-                                if (country.getPopulation() > number)
+                                if (country.GetPopulation() > number)
                                     removeList.Add(country);
                             }
                         }
@@ -239,7 +238,7 @@ namespace LabNine
                             }
                             foreach (GeographicalUnit country in old_countries)
                             {
-                                if (country.getPopulation() < number)
+                                if (country.GetPopulation() < number)
                                     removeList.Add(country);
                             }
                         }
@@ -255,7 +254,7 @@ namespace LabNine
                     {
                         foreach (GeographicalUnit country in countries)
                         {
-                            output += country.getInfoTable();
+                            output += country.GetInfoTable();
                         }
                     }
 
@@ -271,7 +270,7 @@ namespace LabNine
                     {
                         output += i.logFormatted() + "\n";
                     }
-                    output += ($"\n{longestIdleTime(log)} - Самый долгий период бездействия пользователя");
+                    output += ($"\n{LongestIdleTime(log)} - Самый долгий период бездействия пользователя");
                     Console.WriteLine(output);
                     Execute(countries, log);
                     break;
@@ -282,7 +281,7 @@ namespace LabNine
                     #endregion
             }
         }
-        public static List<LogEntry> addEntry(LogEntry entry, List<LogEntry> list, int size = 50)
+        public static List<LogEntry> AddEntry(LogEntry entry, List<LogEntry> list, int size = 50)
         {
             List<LogEntry> newList = list.ToList();
             if (list.Count() < size)
@@ -296,7 +295,7 @@ namespace LabNine
             }
             return newList;
         }
-        public static String longestIdleTime(List<LogEntry> log)
+        public static String LongestIdleTime(List<LogEntry> log)
         {
             TimeSpan startTime, endTime;
             String idle = "";

@@ -7,15 +7,16 @@ namespace LabNine
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.OutputEncoding = Encoding.UTF8;
-            List<GeographicalUnit> countries = new List<GeographicalUnit>();
-            List<LogEntry> log = new List<LogEntry>();
-            DoublyLinkedList<GeographicalUnit> badCountries = new DoublyLinkedList<GeographicalUnit>();
-            DoublyLinkedList<LogEntry> badLog = new DoublyLinkedList<LogEntry>();
-            //ConsoleAppButShittyList.Execute(badCountries, badLog);
-            TaskFour.Execute();
+            /*List<GeographicalUnit> countries;
+            List<LogEntry> log;
+            ConsoleApp.Execute(cuntries, log);*/
+            /*DoublyLinkedList<GeographicalUnit> badCountries;
+            DoublyLinkedList<LogEntry> badLog;
+            ConsoleAppButShittyList.Execute(badCountries, badLog);*/
+            TaskSix.Execute();
         }
     }
 }

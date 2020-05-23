@@ -15,17 +15,13 @@ namespace LabNine
         public T Data { get; set; }
         public Node<T> Next { get; set; }
     }
-    public class CircularLinkedList<T> : IEnumerable<T>  // кольцевой связный список
+    public class CircularLinkedList<T> : IEnumerable<T>
     {
-        Node<T> head; // головной/первый элемент
-        Node<T> tail; // последний/хвостовой элемент
-        int count;  // количество элементов в списке
-
-        // добавление элемента
+        Node<T> head;
+        Node<T> tail;
         public void Add(T data)
         {
             Node<T> node = new Node<T>(data);
-            // если список пуст
             if (head == null)
             {
                 head = node;
@@ -38,22 +34,6 @@ namespace LabNine
                 tail.Next = node;
                 tail = node;
             }
-            count++;
-        }
-
-        public T ItemAtIndex(int index)
-        {
-            if (index < 0)
-                throw new IndexOutOfRangeException("no.");
-            Node<T> current = head;
-            for(int i =0; i <= index; i++)
-            {
-                if (i == index)
-                    return current.Data;
-                else
-                    current = current.Next;
-            }
-            return default;
         }
         public Node<T> NodeAtIndex(int index)
         {
@@ -89,7 +69,6 @@ namespace LabNine
         {
             return ((IEnumerable)this).GetEnumerator();
         }
-
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             Node<T> current = head;
@@ -102,11 +81,6 @@ namespace LabNine
                 }
             }
             while (current != head);
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            throw new NotImplementedException();
         }
     }
 }
