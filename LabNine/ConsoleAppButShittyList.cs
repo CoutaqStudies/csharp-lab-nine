@@ -8,7 +8,7 @@ namespace LabNine
     public class ConsoleAppButShittyList
     {
         
-        public static void Execute(List<GeographicalUnit> countries, List<LogEntry> log) 
+        public static void Execute(BadList<GeographicalUnit> countries, BadList<LogEntry> log) 
         {
             String prompt = "1 – Просмотр таблицы\n2 – Добавить запись\n3 – Удалить запись\n4 – Обновить запись\n5 – Поиск записей\n6 – Просмотреть лог\n7 - Выход";
             Console.WriteLine(prompt);
@@ -25,7 +25,7 @@ namespace LabNine
             {
                 case 1:
                     String output = "\n--------------------------------------\n";
-                     if (countries.Count==0)
+                     if (countries.Count()==0)
                          output = ("The list is empty!");
                      else
                      {
@@ -80,7 +80,7 @@ namespace LabNine
                             }
                         }
                         form = (GeographicalUnit.FormOfGov)Enum.Parse(typeof(GeographicalUnit.FormOfGov), upperString);
-                    countries.Add(new GeographicalUnit(name, capital, population, form ));
+                    countries.Append(new GeographicalUnit(name, capital, population, form ));
                     Console.WriteLine($"Added {name} to the list.");
                     log = addEntry(new LogEntry(name, LogEntry.Action.ADD), log);
                     Execute(countries,log);
@@ -93,7 +93,7 @@ namespace LabNine
                         {
                             Console.WriteLine("Which entry do you want to remove? ");
                             entry = int.Parse(Console.ReadLine());
-                            if (entry > countries.Count || entry < 1)
+                            if (entry > countries.Count() || entry < 1)
                             {
                                 throw new FormatException();
                             }
@@ -117,7 +117,7 @@ namespace LabNine
                         {
                             Console.WriteLine("Which entry do you want to update? ");
                             entry = int.Parse(Console.ReadLine());
-                            if (entry > countries.Count || entry < 1)
+                            if (entry > countries.Count() || entry < 1)
                             {
                                 throw new FormatException();
                             }
@@ -169,8 +169,8 @@ namespace LabNine
                     }
                     form = (GeographicalUnit.FormOfGov)Enum.Parse(typeof(GeographicalUnit.FormOfGov), upperString);
                     Console.WriteLine($"Updated {name}.");
-                    countries.RemoveAt(entry - 1);
-                    countries.Insert(entry-1, new GeographicalUnit(name, capital, population, form));
+                    countries.removeAtIndex(entry - 1);
+                    countries.Append(entry-1, new GeographicalUnit(name, capital, population, form));
                     log = addEntry(new LogEntry(name, LogEntry.Action.UPDATE), log);
                     Execute(countries,log);
                     break;
@@ -258,7 +258,7 @@ namespace LabNine
                         countries.Remove(country);
                     }
                     output = "\n--------------------------------------\n";
-                    if (countries.Count == 0)
+                    if (countries.Count() == 0)
                         output = ("The list is empty!");
                     else
                     {
@@ -269,7 +269,12 @@ namespace LabNine
                     }
 
                     Console.WriteLine(output);
-                    countries = old_countries.ToList();
+                    countries.Clear();
+                    foreach(var c in old_countries)
+                    {
+                        countries.Append(c);
+                    }
+                   // countries = old_countries.ToList();
                     Execute(countries,log);
                     break;
                 case 6:
@@ -286,17 +291,21 @@ namespace LabNine
                     return;
             }
         }
-        public static List<LogEntry> addEntry(LogEntry entry, List<LogEntry> list, int size = 50)
+        public static BadList<LogEntry> addEntry(LogEntry entry, BadList<LogEntry> list, int size = 50)
         {
-            List<LogEntry> newList = list.ToList();
+            BadList<LogEntry> newList = new BadList<LogEntry>();
+            foreach (var c in list)
+            {
+                newList.Append(c);
+            }
             if (list.Count() < size)
             {
-                newList.Add(entry);
+                newList.Append(entry);
             }
             else
             {
-                newList.RemoveAt(0);
-                newList.Add(entry);
+                newList.RemoveAtIndex(0);
+                newList.Append(entry);
             }
             return newList;
         }

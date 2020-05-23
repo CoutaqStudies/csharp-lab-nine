@@ -3,12 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LabNine
+namespace MyAttemptAtADoubleList
 {
     public class DoublyNode<T>
     {
@@ -22,9 +17,9 @@ namespace LabNine
     }
     public class DoublyLinkedList<T> : IEnumerable<T>
     {
-        DoublyNode<T> head;
-        DoublyNode<T> tail;
-        int count;
+        DoublyNode<T> head; 
+        DoublyNode<T> tail; 
+        int count; 
         public void Add(T data)
         {
             DoublyNode<T> node = new DoublyNode<T>(data);
@@ -81,7 +76,7 @@ namespace LabNine
         {
             DoublyNode<T> current = head;
             T[] array = new T[count];
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i<array.Length; i++)
             {
                 array[i] = current.Data;
                 current = current.Next;
@@ -96,7 +91,7 @@ namespace LabNine
             if (index < 0)
                 throw new IndexOutOfRangeException("Index cannot be negative.");
             DoublyNode<T> current = head;
-            for (int i = 0; current != null; i++)
+            for(int i =0; current!=null; i++)
             {
                 if (i == index)
                     return current.Data;
