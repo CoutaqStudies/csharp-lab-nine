@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace LabNine
@@ -13,7 +14,11 @@ namespace LabNine
             List<LogEntry> log = new List<LogEntry>();
             DoublyLinkedList<GeographicalUnit> badCountries = new DoublyLinkedList<GeographicalUnit>();
             DoublyLinkedList<LogEntry> badLog = new DoublyLinkedList<LogEntry>();
-            ConsoleAppButShittyList.Execute(badCountries, badLog);
+            //ConsoleAppButShittyList.Execute(badCountries, badLog);
+            while (true)
+            {
+                TaskTwo.Execute();
+            }
         }
     }
 }

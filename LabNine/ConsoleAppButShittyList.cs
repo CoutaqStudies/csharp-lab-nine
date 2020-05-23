@@ -8,6 +8,7 @@ namespace LabNine
     public class ConsoleAppButShittyList
     {
         const int SHOW = 1, ADD = 2, DELETE = 3, UPDATE = 4, SEARCH = 5, SHOWLOG = 6, EXIT = 7;
+        //i hate this custom list shit.
         public static void Execute(DoublyLinkedList<GeographicalUnit> countries, DoublyLinkedList<LogEntry> log)
         {
             #region PROMPT
