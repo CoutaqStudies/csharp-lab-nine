@@ -15,10 +15,7 @@ namespace LabNine
             DoublyLinkedList<GeographicalUnit> badCountries = new DoublyLinkedList<GeographicalUnit>();
             DoublyLinkedList<LogEntry> badLog = new DoublyLinkedList<LogEntry>();
             //ConsoleAppButShittyList.Execute(badCountries, badLog);
-            while (true)
-            {
-                TaskTwo.Execute();
-            }
+            TaskThree.Execute();
         }
     }
 }

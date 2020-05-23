@@ -8,6 +8,7 @@ namespace LabNine
     {
         public static void Execute()
         {
+            Console.OutputEncoding = Encoding.UTF8;
             Console.Write("Enter your expression:");
             String expression = Console.ReadLine();
             Stack<Char> parenthesis = new Stack<Char>();
